@@ -1,0 +1,234 @@
+[
+{
+"table": "league",
+"place": 1,
+"points": 100,
+"label": ""
+},
+{
+"table": "league",
+"place": 2,
+"points": 80,
+"label": ""
+},
+{
+"table": "league",
+"place": 3,
+"points": 65,
+"label": ""
+},
+{
+"table": "league",
+"place": 4,
+"points": 55,
+"label": ""
+},
+{
+"table": "league",
+"place": 5,
+"points": 51,
+"label": ""
+},
+{
+"table": "league",
+"place": 6,
+"points": 47,
+"label": ""
+},
+{
+"table": "league",
+"place": 7,
+"points": 43,
+"label": ""
+},
+{
+"table": "league",
+"place": 8,
+"points": 40,
+"label": ""
+},
+{
+"table": "league",
+"place": 9,
+"points": 37,
+"label": ""
+},
+{
+"table": "league",
+"place": 10,
+"points": 34,
+"label": ""
+},
+{
+"table": "league",
+"place": 11,
+"points": 31,
+"label": ""
+},
+{
+"table": "league",
+"place": 12,
+"points": 28,
+"label": ""
+},
+{
+"table": "league",
+"place": 13,
+"points": 26,
+"label": ""
+},
+{
+"table": "league",
+"place": 14,
+"points": 24,
+"label": ""
+},
+{
+"table": "league",
+"place": 15,
+"points": 22,
+"label": ""
+},
+{
+"table": "league",
+"place": 16,
+"points": 20,
+"label": ""
+},
+{
+"table": "league",
+"place": 17,
+"points": 18,
+"label": ""
+},
+{
+"table": "league",
+"place": 18,
+"points": 16,
+"label": ""
+},
+{
+"table": "league",
+"place": 19,
+"points": 14,
+"label": ""
+},
+{
+"table": "league",
+"place": 20,
+"points": 12,
+"label": ""
+},
+{
+"table": "league",
+"place": 21,
+"points": 10,
+"label": ""
+},
+{
+"table": "league",
+"place": 22,
+"points": 9,
+"label": ""
+},
+{
+"table": "league",
+"place": 23,
+"points": 8,
+"label": ""
+},
+{
+"table": "league",
+"place": 24,
+"points": 7,
+"label": ""
+},
+{
+"table": "league",
+"place": 25,
+"points": 6,
+"label": ""
+},
+{
+"table": "league",
+"place": 26,
+"points": 5,
+"label": ""
+},
+{
+"table": "league",
+"place": 27,
+"points": 4,
+"label": ""
+},
+{
+"table": "league",
+"place": 28,
+"points": 3,
+"label": ""
+},
+{
+"table": "league",
+"place": 29,
+"points": 2,
+"label": ""
+},
+{
+"table": "league",
+"place": 30,
+"points": 1,
+"label": ""
+},
+{
+"table": "world",
+"place": 1,
+"place_to": 10,
+"points": 400,
+"label": ""
+},
+{
+"table": "world",
+"place": 11,
+"place_to": 20,
+"points": 300,
+"label": ""
+},
+{
+"table": "world",
+"place": 21,
+"place_to": 30,
+"points": 200,
+"label": ""
+},
+{
+"table": "world",
+"place": 31,
+"place_to": 40,
+"points": 100,
+"label": ""
+},
+{
+"table": "intl",
+"place": null,
+"points": 100,
+"label": "WYCH-podium"
+},
+{
+"table": "intl",
+"place": null,
+"points": 60,
+"label": "WYCH-final"
+},
+{
+"table": "intl",
+"place": null,
+"points": 60,
+"label": "EYCH-podium"
+},
+{
+"table": "intl",
+"place": null,
+"points": 40,
+"label": "EYCH-final"
+}
+]

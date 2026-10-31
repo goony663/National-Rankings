@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>המדרג הלאומי בטיפוס</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Cpath fill=%27%2344869e%27 d=%27M6 2h7L9 30H2z%27/%3E%3Cpath fill=%27%232e5360%27 d=%27M15 2h7l-4 28h-7z%27/%3E%3Cpath fill=%27%2301293f%27 d=%27M24 2h7l-4 28h-7z%27/%3E%3C/svg%3E">
+<meta name="description" content="המדרג הלאומי בטיפוס ספורטיבי – בולדר והובלה, בוגרים ונוער, עונת 2026/27">
+<style>
+:root { --color-bg: #ffffff; --color-fg: #10202b; --color-fg-muted: #5a6b75; --cds-dur-slow: .3s; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --color-bg: #0e1a22; --color-fg: #e8eef1; --color-fg-muted: #9fb0b9; color-scheme: dark; } }
+html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); }
+body { padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left)); }
+.dash-skeleton { color: transparent; background: color-mix(in srgb, var(--color-fg) 8%, transparent); border-radius: 4px; }
+</style>
+<script>
+// Stand-in for the dashboard runtime: loads data/*.json and serves it to the page code.
+(() => {
+  const IDS = ['results', 'competitions', 'scoring', 'abroad'];
+  const DATA = {}; let failed = false;
+  const DEFAULTS = { disc: 'B', cat: 'ADULT', gender: 'M' };
+  let params = { ...DEFAULTS };
+  try { Object.assign(params, JSON.parse(localStorage.getItem('nr-params') || '{}')); } catch (e) {}
+  const subs = [], calcDefs = {}, calcs = {};
+  const run = () => subs.forEach((f) => { try { f(); } catch (e) { console.error(e); } });
+  const ready = () => IDS.every((id) => DATA[id]);
+  window.dash = {
+    data: (id) => DATA[id] ? { status: 'ok', data: DATA[id] }
+      : calcs[id] ? { status: 'ok', data: calcs[id] }
+      : { status: failed ? 'error' : 'loading', data: [] },
+    calc: (id, o) => { calcDefs[id] = o; },
+    onData: (f) => { subs.push(f); f(); },
+    params: () => params,
+    setParams: (p) => { Object.assign(params, p); try { localStorage.setItem('nr-params', JSON.stringify(params)); } catch (e) {} run(); },
+    resetParams: () => { params = { ...DEFAULTS }; run(); },
+  };
+  Promise.all(IDS.map((id) => fetch('data/' + id + '.json', { cache: 'no-cache' }).then((r) => {
+    if (!r.ok) throw new Error(id + ' ' + r.status);
+    return r.json();
+  }).then((d) => { DATA[id] = d; })))
+    .then(() => {
+      for (const [id, o] of Object.entries(calcDefs)) calcs[id] = o.fn(...o.inputs.map((i) => DATA[i]));
+      run();
+    })
+    .catch((e) => { console.error(e); failed = true; run(); });
+})();
+</script>
+</head>
+<body>
+<style>
+/* Layout: masthead (title right, federation logo left) → slanted discipline tabs echoing the logo's stripes → season track → podium of the selected table → full ranking sheet. */
+.nr {
+  /* Brand, sampled from the ILCA logo */
+  --nr-navy: #01293f;
+  --nr-sky: #44869e;
+  --nr-slate: #2e5360;
+  /* Theme-following surfaces derived from the dashboard's own tokens */
+  --nr-ink: var(--color-fg);
+  --nr-muted: var(--color-fg-muted);
+  --nr-tint: color-mix(in srgb, var(--nr-sky) 7%, var(--color-bg));
+  --nr-tint-2: color-mix(in srgb, var(--nr-sky) 15%, var(--color-bg));
+  --nr-line: color-mix(in srgb, var(--nr-sky) 26%, var(--color-bg));
+  --nr-sky-ink: color-mix(in srgb, var(--nr-sky) 72%, var(--color-fg));
+  --nr-slate-ink: color-mix(in srgb, var(--nr-slate) 78%, var(--color-fg));
+  --nr-font: "Segoe UI", system-ui, -apple-system, "Noto Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
+  --nr-r: 10px;
+  font-family: var(--nr-font);
+  color: var(--nr-ink);
+  direction: rtl;
+  text-align: right;
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  max-width: 76rem;
+  margin-inline: auto;
+}
+.nr * { box-sizing: border-box; }
+
+/* Masthead */
+.nr-mast { display: flex; flex-wrap: wrap-reverse; align-items: center; justify-content: space-between; gap: 1rem 2rem; padding-block-end: 1.25rem; border-bottom: 3px solid var(--nr-navy); position: relative; }
+.nr-mast::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 34%; height: 3px; background: linear-gradient(90deg, var(--nr-sky) 0 34%, var(--nr-slate) 34% 67%, var(--nr-navy) 67%); }
+.nr-mast-text { display: grid; gap: .35rem; min-width: 0; flex: 1 1 22rem; }
+.nr-eyebrow { font-size: .8rem; font-weight: 600; letter-spacing: .06em; color: var(--nr-sky-ink); }
+.nr-title { margin: 0; font-weight: 700; font-size: clamp(2.1rem, 1.3rem + 3.2vw, 3.4rem); line-height: 1.05; text-wrap: balance; }
+.nr-lede { margin: .35rem 0 0; color: var(--nr-muted); font-size: .98rem; line-height: 1.55; max-width: 60ch; }
+.nr-lede b { color: var(--nr-ink); font-weight: 700; }
+.nr-logo { width: clamp(9.5rem, 22vw, 15rem); height: auto; flex: 0 0 auto; display: block; }
+.nr-logo .lg-ink { fill: var(--nr-ink); }
+.nr-logo .lg-sky { fill: var(--nr-sky); }
+.nr-logo .lg-slate { fill: var(--nr-slate-ink); }
+
+/* Controls */
+.nr-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.5rem; }
+.nr-disc { display: flex; gap: .45rem; padding-inline: .4rem; }
+.nr-disc button {
+  font: inherit; font-weight: 700; font-size: 1.05rem; cursor: pointer;
+  border: 0; color: var(--nr-ink); background: var(--nr-tint-2);
+  padding: .55rem 1.6rem; min-height: 2.6rem;
+  transform: skewX(-14deg); border-radius: 4px;
+  transition: background .15s, color .15s;
+}
+.nr-disc button > span { display: inline-block; transform: skewX(14deg); }
+.nr-disc button:hover { background: var(--nr-line); }
+.nr-disc button[aria-pressed="true"] { background: var(--nr-navy); color: #fff; }
+.nr-seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--nr-tint); border: 1px solid var(--nr-line); }
+.nr-seg button { font: inherit; font-size: .92rem; font-weight: 600; border: 0; background: transparent; color: var(--nr-muted); padding: .35rem .95rem; border-radius: 999px; cursor: pointer; min-height: 2.1rem; }
+.nr-seg button:hover { color: var(--nr-ink); }
+.nr-seg button[aria-pressed="true"] { background: var(--nr-sky); color: #fff; }
+.nr button:focus-visible, .nr-search:focus-visible { outline: 2px solid var(--nr-sky); outline-offset: 3px; }
+
+/* Season track */
+.nr-track { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); }
+.nr-stop { position: relative; display: grid; gap: .15rem; padding: 1.55rem .5rem 0 .75rem; min-width: 0; }
+.nr-stop::before { content: ""; position: absolute; top: .55rem; right: 0; left: 0; height: 3px; background: var(--nr-line); }
+.nr-stop[data-state="done"]::before { background: var(--nr-navy); }
+.nr-stop:first-child::before { right: .55rem; }
+.nr-dot { position: absolute; top: 0; right: 0; width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--color-bg); border: 3px solid var(--nr-line); z-index: 1; }
+.nr-stop[data-state="done"] .nr-dot { background: var(--nr-navy); border-color: var(--nr-navy); }
+.nr-stop[data-state="next"] .nr-dot { border-color: var(--nr-sky); box-shadow: 0 0 0 4px color-mix(in srgb, var(--nr-sky) 22%, transparent); }
+.nr-stop-tag { font-size: .72rem; font-weight: 700; letter-spacing: .04em; color: var(--nr-muted); }
+.nr-stop[data-state="done"] .nr-stop-tag { color: var(--nr-ink); }
+.nr-stop[data-state="next"] .nr-stop-tag { color: var(--nr-sky-ink); }
+.nr-stop-name { font-weight: 700; font-size: .95rem; line-height: 1.25; }
+.nr-stop-meta { font-size: .8rem; color: var(--nr-muted); font-variant-numeric: tabular-nums; }
+@media (max-width: 40rem) {
+  .nr-track { grid-template-columns: 1fr; gap: .2rem; }
+  .nr-stop { padding: 0 1.8rem .9rem 0; }
+  .nr-stop::before { top: 0; bottom: 0; right: .5rem; left: auto; width: 3px; height: auto; }
+  .nr-stop:first-child::before { right: .5rem; top: .5rem; }
+  .nr-stop:last-child::before { bottom: auto; height: .6rem; }
+  .nr-dot { top: .1rem; }
+}
+
+/* Podium */
+.nr-section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }
+.nr-h2 { margin: 0; font-size: clamp(1.3rem, 1rem + 1.2vw, 1.75rem); font-weight: 700; }
+.nr-h2 small { display: inline-block; unicode-bidi: isolate; font-size: .85rem; font-weight: 500; color: var(--nr-muted); margin-inline-start: .9rem; padding-inline-start: .9rem; border-inline-start: 1px solid var(--nr-line); vertical-align: middle; }
+.nr-podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.nr-pod { position: relative; overflow: hidden; border-radius: var(--nr-r); padding: 1rem 1.1rem 1.05rem; background: var(--nr-tint); border: 1px solid var(--nr-line); display: grid; gap: .2rem; min-width: 0; }
+/* Podium steps follow the logo's three stripes: navy → slate → steel blue */
+.nr-pod[data-rank] { color: #fff; border-color: transparent; }
+.nr-pod[data-rank="1"] { background: var(--nr-navy); }
+.nr-pod[data-rank="2"] { background: var(--nr-slate); }
+.nr-pod[data-rank="3"] { background: #3d7d95; }
+.nr-pod-rank { font-size: 2.6rem; font-weight: 700; line-height: .9; color: var(--nr-sky-ink); font-variant-numeric: tabular-nums; }
+.nr-pod[data-rank="1"] .nr-pod-rank { color: #8fc3d6; }
+.nr-pod[data-rank="2"] .nr-pod-rank { color: #a9cbd7; }
+.nr-pod[data-rank="3"] .nr-pod-rank { color: #d3e8ef; }
+.nr-pod-name { font-weight: 700; font-size: 1.1rem; line-height: 1.2; overflow-wrap: anywhere; }
+.nr-pod-club { font-size: .8rem; color: var(--nr-muted); }
+.nr-pod[data-rank] .nr-pod-club { color: rgba(255,255,255,.78); }
+.nr-pod-pts { margin-top: .35rem; font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.nr-pod-pts small { font-size: .78rem; font-weight: 500; opacity: .8; margin-inline-start: .25rem; }
+.nr-pod::after { content: ""; position: absolute; left: -1.2rem; top: -10%; width: 2.4rem; height: 120%; transform: skewX(-14deg); background: currentColor; opacity: .05; }
+.nr-pod[data-rank]::after { background: #fff; opacity: .08; }
+.nr-pod[data-rank="1"]::after { background: var(--nr-sky); opacity: .45; }
+@media (max-width: 40rem) { .nr-podium { grid-template-columns: 1fr; } .nr-pod-rank { font-size: 2rem; } }
+
+/* Ranking sheet */
+.nr-search { font: inherit; font-size: .92rem; border: 1px solid var(--nr-line); border-radius: 999px; background: var(--color-bg); color: var(--nr-ink); padding: .45rem 1rem; width: min(100%, 17rem); }
+.nr-sheet { border: 1px solid var(--nr-line); border-radius: var(--nr-r); overflow: hidden; background: var(--color-bg); min-width: 0; }
+.nr-scroll { overflow: auto; max-height: 75vh; }
+.nr-table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; font-size: .93rem; }
+.nr-table th { position: sticky; top: 0; z-index: 1; background: var(--nr-navy); color: #fff; text-align: right; font-weight: 700; vertical-align: bottom; padding: .7rem .65rem; white-space: nowrap; }
+.nr-table th.n, .nr-table td.n { text-align: center; }
+.nr-table th[hidden], .nr [hidden] { display: none; }
+.nr-table th .nr-th-sub { display: block; font-size: .72rem; font-weight: 400; color: #b9cfd9; line-height: 1.35; }
+.nr-table th.total-h { background: var(--nr-sky); }
+.nr-table th.total-h .nr-th-sub { color: #e8f2f6; }
+.nr-table td { padding: .55rem .65rem; border-bottom: 1px solid var(--nr-line); white-space: nowrap; }
+.nr-table tbody tr:nth-child(even) td { background: var(--nr-tint); }
+.nr-table tbody tr:hover td { background: var(--nr-tint-2); }
+.nr-table tbody tr:last-child td { border-bottom: 0; }
+.nr-table td.rk { width: 3.2rem; }
+.nr-rank { display: inline-grid; place-items: center; min-width: 1.85rem; height: 1.85rem; padding-inline: .3rem; font-weight: 700; }
+.nr-rank[data-top] { border-radius: 6px; color: #fff; transform: skewX(-10deg); }
+.nr-rank[data-top] > span { transform: skewX(10deg); }
+.nr-rank[data-top="1"] { background: var(--nr-navy); }
+.nr-rank[data-top="2"] { background: var(--nr-slate); }
+.nr-rank[data-top="3"] { background: var(--nr-sky); }
+.nr-table td.nm { font-weight: 700; white-space: nowrap; }
+.nr-table td.nm[data-age]::after { content: attr(data-age); font-size: .68rem; font-weight: 700; color: var(--nr-sky-ink); border: 1px solid var(--nr-line); border-radius: 4px; padding: 0 .3rem; margin-inline-start: .45rem; vertical-align: 1px; }
+.nr-table td.club { color: var(--nr-muted); white-space: normal; font-size: .82rem; min-width: 7rem; }
+.nr-table td.pl { font-style: italic; font-weight: 600; }
+.nr-table td.pl[data-pts]::after { content: attr(data-pts); display: block; font-style: normal; font-size: .7rem; font-weight: 500; color: var(--nr-muted); }
+.nr-table td.drop { color: var(--nr-muted); text-decoration: line-through; text-decoration-thickness: 1px; font-weight: 400; }
+.nr-table td.none { color: var(--nr-muted); opacity: .5; font-style: normal; font-weight: 400; }
+.nr-table td.abr { font-weight: 700; }
+.nr-table td.abr[data-note] { cursor: help; text-decoration: underline dotted var(--nr-sky); text-underline-offset: 4px; }
+.nr-table td.abr.prov { color: var(--nr-sky-ink); }
+.nr-table td.total { font-weight: 700; font-size: 1.05rem; color: var(--nr-ink); background-image: linear-gradient(var(--nr-tint-2), var(--nr-tint-2)); }
+.nr-table tr.unranked td { color: var(--nr-muted); }
+.nr-table tr.unranked td.nm, .nr-table tr.unranked td.total { font-weight: 500; }
+.nr-empty { padding: 2rem 1rem; color: var(--nr-muted); text-align: center; white-space: normal !important; }
+@media (max-width: 40rem) { .nr-table .club { display: none; } .nr-table { font-size: .88rem; } }
+
+.nr-legend { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; font-size: .8rem; color: var(--nr-muted); padding: .7rem .9rem; border-top: 1px solid var(--nr-line); background: var(--nr-tint); }
+.nr-legend i, .nr-legend b { color: var(--nr-ink); }
+
+/* How it's scored */
+.nr-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: .75rem; }
+.nr-rule { border-inline-start: 4px solid var(--nr-sky); padding: .2rem 1rem .3rem 0; display: grid; gap: .3rem; }
+.nr-rule:nth-child(2) { border-color: var(--nr-slate); }
+.nr-rule:nth-child(3) { border-color: var(--nr-navy); }
+.nr-rule h3 { margin: 0; font-size: .95rem; font-weight: 700; }
+.nr-rule p { margin: 0; font-size: .85rem; line-height: 1.55; color: var(--nr-muted); max-width: 60ch; }
+
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+@media (prefers-reduced-motion: reduce) { .nr * { transition: none !important; } }
+</style>
+
+<div class="nr" dir="rtl" lang="he">
+  <header class="nr-mast" id="top">
+    <div class="nr-mast-text">
+      <div class="nr-eyebrow">התאחדות הטיפוס בישראל · עונת 2026/27</div>
+      <h1 class="nr-title">המדרג הלאומי בטיפוס</h1>
+      <p class="nr-lede" id="lede" data-source="competitions results"><span class="dash-skeleton">—</span></p>
+    </div>
+    <svg class="nr-logo" viewBox="135.5 326 392.6 159.3" role="img" aria-label="התאחדות הטיפוס בישראל" xmlns="http://www.w3.org/2000/svg"><path class="lg-ink" d="M 180.48 329.16 L 143.87 329.16 L 141.48 343.32 L 147.48 343.32 L 147.48 349.80 C 147.48 351.35 146.87 352.19 145.67 352.19 L 142.19 352.19 L 140.28 365.39 L 150.35 365.39 C 157.32 365.39 160.80 361.44 160.80 353.76 L 160.80 343.32 L 167.16 343.32 L 167.16 365.39 L 180.48 365.39 Z M 180.48 329.16 "/>
+<path class="lg-ink" d="M 201 329.16 L 185.39 329.16 L 183 343.32 L 187.67 343.32 L 187.67 365.39 L 201 365.39 Z M 201 329.16 "/>
+<path class="lg-ink" d="M 204.60 329.16 L 204.60 343.32 L 220.07 343.32 L 220.07 365.39 L 233.39 365.39 L 233.39 343.32 L 237.48 343.32 L 240 329.16 Z M 204.60 329.16 "/>
+<path class="lg-ink" d="M 279.23 329.16 L 243.83 329.16 L 241.44 343.32 L 245.64 343.32 L 245.64 365.39 L 258.96 365.39 L 258.96 343.32 L 265.92 343.32 L 265.92 365.39 L 279.23 365.39 Z M 279.23 329.16 "/>
+<path class="lg-ink" d="M 309.96 329.16 L 307.67 340.92 L 311.39 340.92 C 311.16 342.96 310.55 344.39 309.48 345.12 L 298.07 329.16 L 282.12 329.16 L 282.12 329.87 L 291.23 341.03 C 286.32 343.80 283.44 348.23 282.83 354.23 L 281.64 365.39 L 296.64 365.39 L 298.55 352.80 L 294.23 352.80 C 294.35 350.28 294.96 348.48 296.16 347.28 L 309 365.39 L 324.48 365.39 L 324.48 364.55 L 314.28 351.12 C 319.55 348.71 322.67 344.76 323.51 339.35 L 324.96 329.16 Z M 309.96 329.16 "/>
+<path class="lg-ink" d="M 366.83 329.16 L 330.23 329.16 L 327.96 343.32 L 333.83 343.32 L 333.83 349.80 C 333.83 351.35 333.23 352.19 332.03 352.19 L 328.67 352.19 L 326.64 365.39 L 336.71 365.39 C 343.67 365.39 347.16 361.44 347.16 353.76 L 347.16 343.32 L 353.51 343.32 L 353.51 365.39 L 366.83 365.39 Z M 366.83 329.16 "/>
+<path class="lg-ink" d="M 404.28 329.16 L 371.87 329.16 L 369.48 343.32 L 390.96 343.32 L 390.96 365.39 L 404.28 365.39 Z M 384.83 347.16 L 371.51 347.16 L 371.51 365.39 L 384.83 365.39 Z M 384.83 347.16 "/>
+<path class="lg-ink" d="M 140.64 383.76 L 137.51 402.23 L 143.03 402.23 L 146.64 431.03 L 170.16 431.03 C 175.55 431.03 179.51 429.96 182.16 427.80 C 185.16 425.39 187.32 421.07 188.28 414.83 L 193.19 383.76 Z M 171.60 411.12 C 171.23 413.39 170.03 414.48 167.87 414.48 L 161.51 414.48 L 160.19 401.64 L 172.80 401.64 Z M 171.60 411.12 "/>
+<path class="lg-ink" d="M 218.51 383.64 L 198.23 383.64 L 195.12 402.23 L 201.12 402.23 L 201.12 431.03 L 218.51 431.03 Z M 218.51 383.64 "/>
+<path class="lg-ink" d="M 270 383.76 L 225.23 383.76 L 222.12 402.23 L 227.28 402.23 L 225.60 410.03 L 243.60 410.03 L 243.60 400.55 L 252.60 400.55 L 252.60 414.23 L 224.87 414.23 L 221.51 431.03 L 270 431.03 Z M 270 383.76 "/>
+<path class="lg-ink" d="M 297 383.64 L 276.60 383.64 L 273.48 402.23 L 279.60 402.23 L 279.60 413.76 L 297 413.76 Z M 297 383.64 "/>
+<path class="lg-ink" d="M 329.51 383.76 L 327 401.64 L 335.51 401.64 L 333.83 411.12 C 333.35 413.39 332.16 414.48 330 414.48 L 324.83 414.48 L 321.71 383.76 L 303.48 383.76 L 300.35 402.23 L 305.76 402.23 L 309.96 431.03 L 333.23 431.03 C 338.16 431.03 342 429.71 344.87 427.19 C 348 424.44 350.03 420 351.12 413.64 L 356.28 383.76 Z M 329.51 383.76 "/>
+<path class="lg-ink" d="M 403.67 383.64 L 361.32 383.64 L 358.19 402.23 L 386.28 402.23 L 386.28 431.03 L 403.67 431.03 Z M 378.23 407.28 L 360.83 407.28 L 360.83 431.03 L 378.23 431.03 Z M 378.23 407.28 "/>
+<path class="lg-ink" d="M 173.28 449.64 L 154.44 449.64 L 154.44 441 L 148.80 441 L 148.80 454.92 L 166.92 454.92 L 156.71 482.16 L 156.71 483 L 162.12 483 L 172.67 455.28 C 173.03 454.19 173.28 453.12 173.28 452.16 Z M 173.28 449.64 "/>
+<path class="lg-ink" d="M 223.55 482.28 L 216.12 470.87 L 220.55 466.44 C 221.51 465.35 222 464.03 222 462.35 L 222 449.64 L 216.35 449.64 L 216.35 463.55 L 213.48 466.92 L 202.07 449.64 L 195.83 449.64 L 195.83 450.23 L 202.67 460.19 L 198.12 464.76 C 197.28 465.60 196.80 466.80 196.80 468.23 L 196.80 483 L 202.44 483 L 202.44 467.39 L 205.32 464.28 L 217.44 483 L 223.55 483 Z M 223.55 482.28 "/>
+<path class="lg-ink" d="M 268.07 454.44 C 268.07 451.32 266.64 449.76 263.76 449.76 L 245.51 449.76 L 245.51 454.92 L 262.44 454.92 L 262.44 483 L 268.07 483 Z M 268.07 454.44 "/>
+<path class="lg-ink" d="M 324.60 449.64 L 318.96 449.64 L 318.96 477.96 L 311.76 477.96 L 311.76 449.64 L 306.12 449.64 L 306.12 477.96 L 298.80 477.96 L 298.80 449.64 L 293.16 449.64 L 293.16 475.80 C 293.16 478.19 293.64 480 294.60 481.07 C 295.67 482.28 297.48 483 300.12 483 L 317.64 483 C 322.32 483 324.60 480.60 324.60 475.67 Z M 324.60 449.64 "/>
+<path class="lg-ink" d="M 349.55 449.51 L 355.32 449.51 L 355.32 469.32 L 349.55 469.32 Z M 349.55 449.51 "/>
+<path class="lg-ink" d="M 404.28 477.83 L 400.80 477.83 L 400.80 453.83 C 400.80 451.07 399.60 449.76 397.07 449.76 L 379.80 449.76 L 379.80 454.92 L 395.16 454.92 L 395.16 477.83 L 378.71 477.83 L 378.71 483 L 404.28 483 Z M 404.28 477.83 "/>
+<path class="lg-ink" d="M 509.16 431.87 C 508.92 432 508.55 432.12 508.19 432.12 C 507.96 432.12 507.71 432 507.48 431.87 C 507.12 431.64 507 431.16 507 430.55 C 506.87 429.48 507.12 428.39 507.48 427.44 C 508.55 424.44 510.48 421.92 512.39 419.39 L 512.51 419.28 C 513.35 418.19 514.19 417.12 515.16 416.03 C 515.51 415.55 516 415.07 516.35 414.60 L 516.83 414.12 L 517.07 414.71 C 517.80 416.39 518.51 417.96 519.12 419.51 C 519.12 419.51 519.23 419.64 519.23 419.76 C 519.23 419.76 519.23 419.76 519.23 419.87 C 520.44 421.19 519.48 422.28 518.87 422.87 C 518.16 423.71 517.55 424.44 516.83 425.28 C 515.76 426.48 514.55 427.80 513.48 429.12 C 512.16 430.44 510.71 431.39 509.16 431.87 Z M 483.23 426 C 483.12 426.12 482.87 426.12 482.64 426.12 C 482.39 426.12 482.28 426.12 482.03 426 C 481.67 425.87 481.44 425.76 481.19 425.64 C 481.07 425.51 480.96 425.39 480.71 425.39 L 480.48 425.28 C 480.23 425.03 480 424.92 479.76 424.92 C 479.39 424.80 478.92 424.55 478.80 424.19 C 478.67 423.83 478.92 423.48 479.16 423.12 C 479.76 422.51 480.23 421.92 480.83 421.32 L 481.92 420.23 L 482.28 420.71 C 483.12 422.16 483.48 423.48 483.60 424.92 C 483.71 425.51 483.35 425.87 483.23 426 Z M 513.60 432.71 C 514.07 432.60 514.55 432.35 515.03 432.12 C 518.76 430.19 522.23 427.67 525.48 424.67 C 525.71 424.44 525.96 423.83 525.96 423.60 C 525.60 421.67 525.35 419.76 524.76 417.96 C 524.03 415.44 522.83 412.07 521.64 408.71 L 521.28 407.87 L 522.12 408.23 C 522.60 408.35 523.07 408.23 523.55 407.87 C 524.03 407.51 524.39 406.92 524.64 406.55 C 523.07 406.55 521.87 405.60 521.16 403.80 C 521.16 403.55 521.16 403.44 521.03 403.32 C 520.32 401.39 518.28 399.60 517.07 398.64 L 516.83 398.51 L 516.83 398.28 C 516.96 397.67 517.19 397.32 517.92 396.96 C 519.60 396.12 520.55 394.55 520.67 392.16 C 520.80 390 519.71 387.71 517.92 386.28 C 516 384.71 513.60 384.23 511.32 384.96 C 510.48 385.19 509.76 385.44 509.16 385.92 C 508.55 386.39 507.83 386.87 506.87 386.87 L 505.32 386.87 C 505.44 387 505.44 387.12 505.55 387.23 C 505.55 387.12 505.55 387 505.55 387 L 507 387.71 C 507 387.71 507.35 388.92 506.28 388.44 C 506.03 388.19 505.92 388.07 505.80 387.96 C 505.32 389.16 504.48 390.35 503.39 391.19 C 503.03 391.55 502.80 391.80 502.80 392.03 C 502.80 392.16 502.92 392.51 503.28 392.76 C 504.71 394.19 505.55 396.12 505.80 398.76 C 505.80 399.35 505.55 399.71 505.44 399.83 C 505.19 399.96 504.83 400.07 504.35 399.71 C 504.23 399.71 504 399.60 503.87 399.60 C 503.64 399.48 503.28 399.23 502.92 399.12 C 500.51 397.67 498.35 395.76 496.55 393.35 C 496.19 392.87 495.71 392.28 495.35 391.80 C 494.64 391.07 494.03 390.23 493.44 389.39 C 492.71 388.55 492.12 387.60 491.51 386.76 C 491.16 386.03 490.67 385.32 490.32 384.60 C 489.71 383.51 489.12 382.44 488.51 381.48 C 487.55 380.03 486.60 378.60 485.51 377.28 L 485.51 377.16 C 485.16 377.28 484.92 377.51 484.55 377.64 C 483.60 378.12 482.76 378.60 481.92 379.32 C 481.92 379.32 482.03 379.32 482.03 379.32 C 483.12 381.83 484.55 384.23 486.12 386.39 C 486.96 387.83 487.92 389.39 488.87 390.96 C 490.92 394.80 493.32 398.76 496.44 402.23 L 498.83 404.76 L 496.55 407.28 C 495 408.96 494.76 410.64 495.48 412.55 C 496.19 414 495.96 415.44 495.60 416.87 C 495.60 417.12 495.60 417.35 495.48 417.60 C 495.35 418.32 495.23 419.03 495.12 419.64 L 494.87 420.83 L 494.03 421.07 L 493.92 420.83 C 493.80 420.71 493.67 420.48 493.55 420.35 C 493.32 420 493.07 419.64 492.83 419.28 C 491.28 416.51 489.71 413.87 487.55 411.71 C 486.83 411.12 486 410.51 485.16 409.92 C 484.92 409.80 484.67 409.55 484.44 409.44 C 484.44 409.44 484.19 409.44 484.19 409.44 C 480.96 411.12 478.67 413.03 476.87 415.55 C 475.80 417.12 474.35 418.55 473.03 420 C 472.44 420.48 471.83 421.07 471.35 421.67 C 471.12 421.92 470.76 422.03 470.51 422.03 C 469.55 421.92 468.60 421.92 467.64 421.80 L 467.16 421.80 L 467.03 421.92 C 466.92 422.03 466.80 422.28 466.67 422.39 C 465.71 423.60 464.39 425.39 463.32 427.80 C 463.92 430.67 464.51 434.39 464.28 438 C 464.39 438 464.39 438.12 464.51 438.12 C 464.64 438.35 464.76 438.48 464.87 438.71 C 465.48 441.96 466.19 445.07 466.80 448.19 C 466.80 448.55 466.80 448.80 466.80 449.16 C 466.80 449.28 466.80 449.39 466.80 449.51 L 466.80 449.87 L 466.55 449.87 C 466.32 450 466.19 450 466.07 450 C 465.96 450 465.83 450 465.71 450.12 C 464.87 451.92 462.96 453.12 461.16 454.07 C 459.48 455.16 457.80 456.12 457.19 457.67 C 457.55 458.39 458.28 459 459 459.60 C 459.12 459.71 459.12 459.71 459.23 459.71 C 460.44 459.96 461.64 459.96 462.71 459.96 C 462.83 459.96 462.83 459.83 462.96 459.83 C 463.67 459.60 464.28 459.35 464.87 459.12 L 465.48 459 C 465.71 458.87 465.83 458.87 466.07 458.76 C 466.67 458.51 467.28 458.39 467.87 458.28 C 468.60 458.16 469.32 458.16 470.03 458.16 C 470.64 458.03 471.23 458.03 471.83 458.03 C 473.16 457.92 473.64 457.32 473.51 456 C 473.39 455.28 473.39 454.67 473.28 454.07 L 473.03 451.92 L 473.87 452.87 C 474 453 474.12 453 474.12 453 C 474.12 453 474.23 453 474.48 452.76 C 474.60 452.51 474.60 452.51 474.60 452.51 C 474.60 452.51 474.60 452.39 474.48 452.28 C 474.23 452.16 474 451.80 474.12 451.44 C 474.12 451.32 474.12 451.19 474 451.07 C 474 451.07 473.87 450.96 473.64 451.07 C 473.16 451.07 472.67 451.07 472.44 450.83 C 472.19 450.60 471.96 450.12 471.96 449.64 C 471.96 449.51 471.96 449.39 471.96 449.28 C 471.83 449.03 471.83 448.80 471.83 448.55 C 471.96 444.71 471.96 440.87 472.07 436.92 C 472.07 436.67 472.19 436.44 472.32 436.19 C 472.32 436.07 472.44 435.96 472.44 435.83 L 472.55 435.48 L 473.03 435.60 C 473.03 435.60 473.16 435.71 473.28 435.71 C 473.51 435.83 473.76 435.83 473.87 436.07 C 474.48 436.44 475.07 436.92 475.67 437.28 C 477.35 438.60 479.28 439.92 480.96 441.23 C 483 443.03 485.28 444.12 487.92 444.71 C 491.16 445.44 493.80 445.07 495.96 443.76 L 498.48 442.19 L 498.71 442.32 C 499.19 442.55 499.44 443.03 499.67 443.39 C 499.92 444 500.16 444.23 500.51 444.23 L 500.39 443.39 C 500.16 443.16 499.92 442.80 500.03 442.44 C 500.16 441.96 500.39 441.35 500.64 440.64 C 500.64 440.51 500.76 440.28 501.60 440.03 C 502.07 439.80 503.03 439.67 503.51 439.92 C 503.64 440.03 503.87 440.28 503.87 440.51 C 503.87 440.87 503.87 441.12 504 441.48 C 504 441.96 504 442.44 504 442.92 C 504.12 443.39 504.23 444.12 504.60 444.48 C 505.32 445.55 506.39 446.03 508.07 446.39 C 509.87 446.76 512.16 445.67 512.64 444.23 C 512.87 443.64 513 443.28 513.35 443.03 C 513.71 442.92 514.07 443.16 514.67 443.39 C 514.80 443.39 514.92 443.51 515.03 443.51 C 513.60 441.23 512.64 438.96 512.03 436.67 C 511.92 436.44 511.67 436.07 511.55 435.83 C 511.32 435.48 510.96 435 511.07 434.51 C 511.19 433.92 511.67 433.67 512.03 433.44 C 512.51 433.19 513.12 432.96 513.60 432.71 Z M 513.60 432.71 "/>
+<path class="lg-ink" d="M 506.28 388.44 C 507.35 388.92 507 387.71 507 387.71 L 505.55 387 C 505.55 387 505.55 387.12 505.55 387.23 C 505.55 387.35 505.67 387.35 505.67 387.48 L 505.80 387.71 L 505.80 387.96 C 505.92 388.07 506.03 388.19 506.28 388.44 Z M 506.28 388.44 "/>
+<path class="lg-ink" d="M 505.80 387.71 L 505.67 387.48 C 505.67 387.35 505.55 387.35 505.55 387.23 C 505.55 387.48 505.55 387.71 505.80 387.96 C 505.80 387.96 505.80 387.96 505.80 387.83 Z M 505.80 387.71 "/>
+<path class="lg-sky" d="M 416.87 328.19 L 416.87 483.12 L 427.44 483.12 L 447.60 328.19 Z M 416.87 328.19 "/>
+<path class="lg-ink" d="M 476.03 328.19 C 464.64 378.35 453.23 428.39 441.83 478.55 L 440.87 483.12 L 452.51 483.12 L 452.64 480.96 C 452.76 479.64 453.23 478.55 454.55 477.83 C 454.80 477.71 454.92 477.35 455.03 477 C 455.51 475.80 455.76 474.48 456.23 473.28 C 456.60 472.19 456.83 471 457.55 470.39 C 458.51 469.67 458.51 468.71 459 467.87 C 459.23 467.39 459.48 466.80 459.83 466.44 C 460.07 466.19 460.44 465.96 460.92 465.83 C 460.92 465.83 461.03 465.83 461.16 465.83 C 460.80 462.96 461.39 459.96 463.55 457.19 C 463.67 456.60 463.67 456 463.67 455.28 C 463.67 455.16 463.67 455.16 463.67 454.92 C 463.55 453.83 463.32 452.64 463.44 451.44 C 463.67 449.87 463.92 448.32 464.16 446.87 C 464.16 446.76 464.16 446.64 464.16 446.51 C 464.28 444 464.87 441.12 466.07 438.71 C 466.07 438.35 466.19 437.87 466.19 437.51 C 466.92 433.32 467.87 429 470.03 425.51 C 470.28 424.07 470.64 422.64 471.48 421.44 C 472.32 420.12 472.92 418.67 473.64 417.23 C 474 416.39 474.48 415.67 474.96 414.83 C 475.19 414.23 475.44 413.51 475.80 412.92 C 476.87 411.12 476.39 408.96 476.64 406.92 C 477 404.87 477.12 402.83 477.12 400.80 C 477.12 400.07 477.23 399.60 477.35 399 C 486.96 394.92 492 384.83 492 384.83 L 493.67 372.23 C 494.28 371.51 495 370.92 495.83 370.44 C 496.19 370.19 496.44 369.71 496.55 369.23 C 497.16 367.44 497.64 365.51 498.12 363.48 C 498.60 361.80 498.96 360.12 499.19 358.44 C 499.32 357.23 499.07 355.92 499.19 354.71 C 499.44 352.67 500.03 350.76 500.16 348.71 C 500.28 347.16 500.87 345.83 501.60 344.51 C 502.67 342.48 504 340.44 504.96 338.39 C 505.92 336.71 506.51 334.92 507.23 333.23 L 507.35 328.19 Z M 476.03 328.19 "/>
+<path class="lg-slate" d="M 451.32 328.19 L 429.83 483.12 L 437.87 483.12 L 472.44 328.19 Z M 451.32 328.19 "/></svg>
+  </header>
+
+  <div class="nr-controls" id="filters" role="toolbar" aria-label="בחירת מדרג">
+    <div class="nr-disc" data-param="disc" role="group" aria-label="ענף">
+      <button type="button" data-value="B"><span>בולדר</span></button>
+      <button type="button" data-value="L"><span>הובלה</span></button>
+    </div>
+    <div class="nr-seg" data-param="cat" role="group" aria-label="מחלקת גיל">
+      <button type="button" data-value="ADULT">בוגרים</button>
+      <button type="button" data-value="U21">U21</button>
+      <button type="button" data-value="U19">U19</button>
+      <button type="button" data-value="U17">U17</button>
+    </div>
+    <div class="nr-seg" data-param="gender" role="group" aria-label="מגדר">
+      <button type="button" data-value="M" id="g-m">גברים</button>
+      <button type="button" data-value="W" id="g-w">נשים</button>
+    </div>
+  </div>
+
+  <ol class="nr-track" id="season" aria-label="תחרויות העונה" data-source="competitions results"></ol>
+
+  <section class="nr-board" id="ranking" style="display:grid;gap:1rem">
+    <div class="nr-section-head">
+      <h2 class="nr-h2" id="table-title">—</h2>
+      <input class="nr-search" id="nr-search" type="search" placeholder="חיפוש ספורטאי או אגודה" aria-label="חיפוש ספורטאי או אגודה">
+    </div>
+    <div class="nr-podium" id="podium" data-source="rankings"></div>
+    <div class="nr-sheet">
+      <div class="nr-scroll">
+        <table class="nr-table" id="ranking-table" data-source="rankings" data-row-key="key">
+          <thead>
+            <tr>
+              <th class="n" data-field="rank">דירוג</th>
+              <th data-field="athlete">שם</th>
+              <th class="club" data-field="club">מועדון</th>
+              <th class="n" data-field="L1_place" id="h-L1"><span class="nr-th-name">ליגת העל 1</span><span class="nr-th-sub nr-th-venue"></span><span class="nr-th-sub nr-th-date"></span></th>
+              <th class="n" data-field="L2_place" id="h-L2"><span class="nr-th-name">ליגת העל 2</span><span class="nr-th-sub nr-th-venue"></span><span class="nr-th-sub nr-th-date"></span></th>
+              <th class="n" data-field="L3_place" id="h-L3"><span class="nr-th-name">ליגת העל 3</span><span class="nr-th-sub nr-th-venue"></span><span class="nr-th-sub nr-th-date"></span></th>
+              <th class="n" data-field="NC_place" id="h-NC"><span class="nr-th-name">אליפות</span><span class="nr-th-sub nr-th-venue"></span><span class="nr-th-sub nr-th-date"></span></th>
+              <th class="n" data-field="ABR" id="h-ABR"><span class="nr-th-name">חו״ל</span><span class="nr-th-sub nr-th-date"></span></th>
+              <th class="n total-h" data-field="total">נקודות<span class="nr-th-sub">סה״כ</span></th>
+            </tr>
+          </thead>
+          <tbody id="ranking-body"><tr><td colspan="9"><span class="dash-skeleton">—</span></td></tr></tbody>
+        </table>
+      </div>
+      <div class="nr-legend">
+        <span><i>מספר נטוי</i> – המקום בתחרות, ומתחתיו הנקודות</span>
+        <span><b>מודגש</b> – נספר בסיכום</span>
+        <span id="legend-drop"><s>מחוק</s> – לא נספר (החלשה מבין שלוש הליגות)</span>
+        <span>ריחוף על ניקוד חו״ל מציג את ההישג</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="nr-rules" id="rules" aria-label="איך מחושב הניקוד">
+    <div class="nr-rule">
+      <h3>ניקוד בתחרות</h3>
+      <p>בכל תחרות ליגת העל מקומות 1–30 מקבלים 100, 80, 65, 55 … 1 נקודות. באליפות ישראל ובאליפות ישראל לנוער הניקוד כפול. בתיקו, הספורטאים חולקים את ממוצע נקודות המקומות שתפסו.</p>
+    </div>
+    <div class="nr-rule">
+      <h3 id="rules-title">מה נספר</h3>
+      <p id="rules-text"></p>
+    </div>
+    <div class="nr-rule">
+      <h3>שוויון בטבלה</h3>
+      <p>בשוויון בניקוד הכולל, התוצאה באליפות ישראל מכריעה. אם גם היא שווה, הספורטאים חולקים את המקום.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+// National-ranking engine (rules 2026/27). Returns one row per athlete per table.
+const rankingsFn = (results, competitions, scoring, abroad) => {
+  const r2 = (x) => Math.round(x * 100) / 100;
+  const league = new Map(scoring.filter((s) => s.table === 'league').map((s) => [Number(s.place), Number(s.points)]));
+  // A shared place gets the average of the places it covers (2.3 / 2.2.5); championships double (2.4 / 2.2.4)
+  const pts = (place, tied, mult) => {
+    let sum = 0;
+    for (let p = place; p < place + tied; p++) sum += league.get(p) || 0;
+    return r2((sum / tied) * mult);
+  };
+  // Relative order inside one age group, keeping shared places (2.2.1)
+  const reRank = (rows) => {
+    const s = [...rows].sort((a, b) => a.place - b.place);
+    return s.map((r) => ({ ...r, place: 1 + s.filter((o) => o.place < r.place).length }));
+  };
+  const scored = (rows, mult) => rows.map((r) => ({ ...r, pts: pts(r.place, rows.filter((o) => o.place === r.place).length, mult) }));
+  const tables = new Map();
+  const entry = (disc, gender, cat, r) => {
+    const key = [disc, gender, cat, r.athlete].join('|');
+    if (!tables.has(key)) tables.set(key, { key, disc, gender, cat, age: r.cat || cat, athlete: r.athlete, club: r.club, L1: null, L2: null, L3: null, NC: null, ABR: null, L1_place: null, L2_place: null, L3_place: null, NC_place: null, ABR_note: '', ABR_provisional: false });
+    const e = tables.get(key);
+    e.club = r.club;
+    return e;
+  };
+  for (const c of competitions) {
+    const mult = c.kind === 'league' ? 1 : 2;
+    for (const gender of ['M', 'W']) {
+      const rows = results.filter((r) => r.comp === c.id && r.gender === gender);
+      if (!rows.length) continue;
+      const pools = [];
+      if (c.kind !== 'youth_nc') pools.push(['ADULT', rows.filter((r) => r.pool === 'open')]);
+      if (c.kind !== 'nc') {
+        for (const cat of ['U21', 'U19', 'U17']) {
+          const own = rows.filter((r) => r.pool === cat);
+          pools.push([cat, own.length ? own : reRank(rows.filter((r) => r.pool === 'open' && r.cat === cat))]);
+        }
+      }
+      for (const [cat, pool] of pools) for (const r of scored(pool, mult)) {
+        const e = entry(c.disc, gender, cat, r);
+        e[c.slot] = r.pts;
+        e[c.slot + '_place'] = r.place;
+      }
+    }
+  }
+  // Abroad: world ranking for adults (Table 2), youth Worlds/Europeans for youth (Table 6)
+  for (const a of abroad) {
+    const e = entry(a.disc, a.gender, a.cat, a);
+    const p = a.cat === 'ADULT'
+      ? (scoring.find((s) => s.table === 'world' && a.world_rank >= s.place && a.world_rank <= s.place_to) || { points: 0 }).points
+      : (scoring.find((s) => s.table === 'intl' && s.label === a.event + '-' + a.result) || { points: 0 }).points;
+    e.ABR_note = [e.ABR_note, a.note].filter(Boolean).join(' · ');
+    if (a.provisional) e.ABR_provisional = true;
+    e.ABR = a.cat === 'ADULT' ? Math.max(e.ABR || 0, p) : (e.ABR || 0) + p;
+  }
+  const rows = [...tables.values()].map((e) => {
+    const best = ['L1', 'L2', 'L3'].filter((s) => e[s] !== null).sort((a, b) => e[b] - e[a]).slice(0, 2);
+    let counted = [...best];
+    let abroadCounts = e.ABR !== null && e.ABR > 0;
+    if (e.cat === 'ADULT' && abroadCounts) {
+      // World-ranking points replace the weaker of the two counted league results (2.5–2.6)
+      const weakest = best.length < 2 ? null : best[1];
+      if (weakest === null) counted = best;
+      else if (e.ABR > e[weakest]) counted = [best[0]];
+      else abroadCounts = false;
+    }
+    const total = r2((e.NC || 0) + counted.reduce((s, k) => s + e[k], 0) + (abroadCounts ? e.ABR : 0));
+    return { ...e, total, L1_counts: counted.includes('L1'), L2_counts: counted.includes('L2'), L3_counts: counted.includes('L3'), ABR_counts: abroadCounts };
+  });
+  // Order by total; a tie is broken by the national championship (2.7 / 2.2.9), otherwise shared
+  const out = [];
+  const groups = new Map();
+  for (const r of rows) {
+    const k = r.disc + '|' + r.gender + '|' + r.cat;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  }
+  for (const g of groups.values()) {
+    g.sort((a, b) => b.total - a.total || (b.NC || 0) - (a.NC || 0) || a.athlete.localeCompare(b.athlete, 'he'));
+    g.forEach((r, i) => {
+      const prev = g[i - 1];
+      const same = prev && prev.total === r.total && (prev.NC || 0) === (r.NC || 0);
+      r.rank = r.total > 0 ? (same ? prev.rank : i + 1) : null;
+      // Only athletes with national-ranking points appear in the table
+      if (r.rank) out.push(r);
+    });
+  }
+  return out;
+};
+
+dash.calc('rankings', {
+  inputs: ['results', 'competitions', 'scoring', 'abroad'],
+  fn: rankingsFn,
+  title: 'חישוב המדרג',
+  description: 'ניקוד כל ספורטאי לפי אמות המידה 2026/27: נקודות לכל מקום, שתי הליגות הטובות, אליפות ישראל והישגים בחו״ל.',
+});
+
+(() => {
+  const DISC = { B: 'בולדר', L: 'הובלה' };
+  const CAT = { ADULT: { M: 'גברים', W: 'נשים' }, U21: { M: 'בנים U21', W: 'בנות U21' }, U19: { M: 'בנים U19', W: 'בנות U19' }, U17: { M: 'בנים U17', W: 'בנות U17' } };
+  const MONTH = new Intl.DateTimeFormat('he-IL', { month: 'long', timeZone: 'UTC' });
+  const d = (s) => new Date(s + 'T00:00:00Z');
+  // Wrap number runs in a left-to-right isolate so the page's RTL direction can't reorder them (13–15.10.26, not 15.10.26–13)
+  const LTR = (t) => '\u2066' + t + '\u2069';
+  const longRange = (c) => {
+    const a = d(c.start), b = d(c.end);
+    return a.getUTCMonth() === b.getUTCMonth()
+      ? `${LTR(`${a.getUTCDate()}–${b.getUTCDate()}`)} ב${MONTH.format(a)} ${a.getUTCFullYear()}`
+      : `${a.getUTCDate()} ב${MONTH.format(a)} – ${b.getUTCDate()} ב${MONTH.format(b)} ${b.getUTCFullYear()}`;
+  };
+  const shortRange = (c) => { const a = d(c.start), b = d(c.end); return LTR(`${a.getUTCDate()}–${b.getUTCDate()}.${b.getUTCMonth() + 1}.${String(b.getUTCFullYear()).slice(2)}`); };
+  const fmt = (v) => (v === null || v === undefined ? '–' : (Math.round(v * 100) / 100).toLocaleString('he-IL', { maximumFractionDigits: 2 }));
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+  const mark = (n, source, field, where) => { n.dataset.source = source; n.dataset.field = field; n.dataset.where = where; return n; };
+  const markComp = (n, field, id) => mark(n, 'competitions', field, 'id=' + encodeURIComponent(id));
+  const markRank = (n, field, key) => mark(n, 'rankings', field, 'key=' + encodeURIComponent(key));
+
+  const root = document.querySelector('.nr');
+  const search = document.getElementById('nr-search');
+  let query = '';
+  root.querySelectorAll('[data-param]').forEach((g) => {
+    g.addEventListener('click', (ev) => {
+      const b = ev.target.closest('button[data-value]');
+      if (b) dash.setParams({ [g.dataset.param]: b.dataset.value });
+    });
+  });
+  search.addEventListener('input', () => { query = search.value.trim(); draw(); });
+
+  const P = () => { const p = dash.params(); return { disc: p.disc || 'B', cat: p.cat || 'ADULT', gender: p.gender || 'M' }; };
+  const columnsFor = (comps, p) => {
+    const mine = comps.filter((c) => c.disc === p.disc);
+    const nc = mine.find((c) => c.kind === (p.cat === 'ADULT' ? 'nc' : 'youth_nc'));
+    return ['L1', 'L2', 'L3'].map((s) => mine.find((c) => c.slot === s && c.kind === 'league')).concat(nc ? [nc] : []).filter(Boolean);
+  };
+  const emptyRow = (text) => { const tr = el('tr'); const td = el('td', 'nr-empty', text); td.colSpan = 10; tr.append(td); return tr; };
+
+  function draw() {
+    const p = P();
+    const isAdult = p.cat === 'ADULT';
+    root.querySelectorAll('[data-param]').forEach((g) => g.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.value === p[g.dataset.param]))));
+    document.getElementById('g-m').textContent = isAdult ? 'גברים' : 'בנים';
+    document.getElementById('g-w').textContent = isAdult ? 'נשים' : 'בנות';
+
+    const C = dash.data('competitions');
+    const R = dash.data('results');
+    const comps = C.status === 'ok' ? [...C.data].sort((a, b) => a.start.localeCompare(b.start)) : [];
+    const doneIds = new Set(R.status === 'ok' ? R.data.map((r) => r.comp) : []);
+    const today = new Date().toISOString().slice(0, 10);
+
+    const lede = document.getElementById('lede');
+    if (C.status === 'ok' && R.status === 'ok') {
+      const done = comps.filter((c) => doneIds.has(c.id));
+      const last = done[done.length - 1];
+      const next = comps.find((c) => !doneIds.has(c.id) && c.end >= today);
+      const parts = [];
+      if (last) parts.push('מעודכן לאחר ', markComp(el('b', '', last.name), 'name', last.id), ` (${longRange(last)}).`);
+      else parts.push('טרם נכנסו תוצאות לעונה.');
+      if (next) parts.push(' התחרות הבאה: ', markComp(el('b', '', next.name), 'name', next.id), `, ${longRange(next)}.`);
+      lede.replaceChildren(...parts);
+    }
+
+    // Season track
+    const cols = columnsFor(comps, p);
+    const season = document.getElementById('season');
+    season.style.setProperty('--n', Math.max(cols.length, 1));
+    const firstOpen = cols.find((c) => !doneIds.has(c.id));
+    season.replaceChildren(...cols.map((c) => {
+      const state = doneIds.has(c.id) ? 'done' : c === firstOpen ? 'next' : 'later';
+      const li = el('li', 'nr-stop');
+      li.dataset.state = state;
+      li.append(
+        el('span', 'nr-dot'),
+        el('span', 'nr-stop-tag', state === 'done' ? 'הסתיימה ✓' : state === 'next' ? 'הבאה בתור' : 'בהמשך'),
+        markComp(el('span', 'nr-stop-name', c.name), 'name', c.id),
+        el('span', 'nr-stop-meta', [c.venue, longRange(c)].filter(Boolean).join(' · ')),
+      );
+      return li;
+    }));
+
+    // Column headers
+    const bySlot = Object.fromEntries(cols.map((c) => [c.slot, c]));
+    const leagueSlots = ['L1', 'L2', 'L3'].filter((s) => bySlot[s]);
+    const nLeague = leagueSlots.length;
+    for (const s of ['L1', 'L2', 'L3', 'NC']) {
+      const th = document.getElementById('h-' + s);
+      const c = bySlot[s];
+      th.hidden = !c && s !== 'NC';
+      th.querySelector('.nr-th-name').textContent = c ? c.short : s;
+      th.querySelector('.nr-th-venue').textContent = c && c.venue ? c.venue : '';
+      th.querySelector('.nr-th-date').textContent = c ? shortRange(c) : '';
+    }
+    const abr = document.getElementById('h-ABR');
+    abr.querySelector('.nr-th-name').textContent = isAdult ? 'דירוג עולמי' : 'אליפויות בינ״ל';
+    abr.querySelector('.nr-th-date').textContent = isAdult ? 'נכון ל-1.1' : 'עולם / אירופה';
+
+    document.getElementById('legend-drop').hidden = nLeague < 3;
+    const leagueText = nLeague >= 3 ? 'שתי התוצאות הטובות מבין שלוש תחרויות ליגת העל' : 'שתי תחרויות ליגת העל';
+    document.getElementById('rules-title').textContent = isAdult ? 'מה נספר – בוגרים' : 'מה נספר – נוער';
+    document.getElementById('rules-text').textContent = isAdult
+      ? `אליפות ישראל + ${leagueText}. ניקוד הדירוג העולמי (מקומות 1–40: 400 / 300 / 200 / 100) מחליף את החלשה מבין שתי תוצאות הליגה, אם הוא גבוה ממנה. במדרג הבוגרים כל המתחרים בקטגוריה הפתוחה, כולל U21 ו-U19 (מסומנים ליד השם).`
+      : `אליפות ישראל לנוער + ${leagueText} + אליפויות העולם והאירופה לנוער (עולם: פודיום 100, גמר 60; אירופה: פודיום 60, גמר 40). ב-U21 וב-U19 המקום נקבע לפי הסדר היחסי בין בני מחלקת הגיל בתחרות הפתוחה.`;
+
+    const title = document.getElementById('table-title');
+    title.textContent = `${DISC[p.disc]} · ${CAT[p.cat][p.gender]}`;
+    const K = dash.data('rankings');
+    const body = document.getElementById('ranking-body');
+    const podium = document.getElementById('podium');
+    if (K.status !== 'ok') {
+      if (K.status === 'error') body.replaceChildren(emptyRow('טעינת המדרג נכשלה'));
+      podium.replaceChildren();
+      return;
+    }
+    const all = K.data.filter((r) => r.disc === p.disc && r.gender === p.gender && r.cat === p.cat);
+    const ranked = all.filter((r) => r.rank);
+    title.append(el('small', '', all.length ? `${ranked.length.toLocaleString('he-IL')} מדורגים` : ''));
+
+    // Podium: the top three of this table
+    const top = ranked.filter((r) => r.rank <= 3).slice(0, 3);
+    podium.hidden = !top.length || !!query;
+    podium.replaceChildren(...top.map((r) => {
+      const card = el('div', 'nr-pod');
+      card.dataset.rank = r.rank;
+      const pts = markRank(el('div', 'nr-pod-pts', fmt(r.total)), 'total', r.key);
+      pts.append(el('small', '', 'נק׳'));
+      card.append(
+        markRank(el('div', 'nr-pod-rank', String(r.rank)), 'rank', r.key),
+        markRank(el('div', 'nr-pod-name', r.athlete), 'athlete', r.key),
+        markRank(el('div', 'nr-pod-club', r.club), 'club', r.key),
+        pts,
+      );
+      return card;
+    }));
+
+    let rows = all;
+    const q = query.toLowerCase();
+    if (q) rows = rows.filter((r) => r.athlete.toLowerCase().includes(q) || r.club.toLowerCase().includes(q));
+    if (!rows.length) {
+      body.replaceChildren(emptyRow(all.length ? 'אין תוצאות לחיפוש הזה.' : 'עדיין אין תוצאות למדרג הזה. הוא יתמלא אחרי התחרות הראשונה בענף.'));
+      return;
+    }
+    body.replaceChildren(...rows.map((r) => {
+      const tr = el('tr', r.rank ? '' : 'unranked');
+      tr.dataset.key = r.key;
+      const rk = el('td', 'n rk');
+      const badge = el('span', 'nr-rank');
+      badge.append(el('span', '', r.rank ? String(r.rank) : '–'));
+      if (r.rank && r.rank <= 3) badge.dataset.top = r.rank;
+      rk.append(badge);
+      const nm = el('td', 'nm', r.athlete);
+      if (isAdult && r.age && r.age !== 'ADULT') nm.dataset.age = r.age;
+      const cells = [rk, nm, el('td', 'club', r.club)];
+      const placeCell = (s, counts) => {
+        const td = el('td', 'n pl ' + (r[s] === null ? 'none' : counts ? 'count' : 'drop'), r[s + '_place'] === null ? '–' : String(r[s + '_place']));
+        if (r[s] !== null) td.dataset.pts = `${fmt(r[s])} נק׳`;
+        return td;
+      };
+      for (const s of leagueSlots) cells.push(placeCell(s, r[s + '_counts']));
+      cells.push(placeCell('NC', true));
+      const abrTd = el('td', 'n abr ' + (r.ABR === null ? 'none' : r.ABR_counts ? 'count' : 'drop') + (r.ABR_provisional ? ' prov' : ''), fmt(r.ABR));
+      if (r.ABR_note) abrTd.dataset.note = abrTd.title = r.ABR_note;
+      cells.push(abrTd, el('td', 'n total', fmt(r.total)));
+      tr.append(...cells);
+      return tr;
+    }));
+  }
+  dash.onData(draw);
+})();
+</script>
+
+</body>
+</html>
