@@ -11,8 +11,12 @@
 @media (prefers-color-scheme: dark) { :root { --color-bg: #0e1a22; --color-fg: #e8eef1; --color-fg-muted: #9fb0b9; color-scheme: dark; } }
 html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); }
 body { padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left)); }
+/* Inside the federation site (iframe): the host page already shows the logo and the title */
+html.nr-embedded .nr-logo, html.nr-embedded .nr-title { display: none; }
+html.nr-embedded body { padding-top: 4px; }
 .dash-skeleton { color: transparent; background: color-mix(in srgb, var(--color-fg) 8%, transparent); border-radius: 4px; }
 </style>
+<script>if (window.parent !== window) document.documentElement.classList.add('nr-embedded');</script>
 <script>
 // Stand-in for the dashboard runtime: loads data/*.json and serves it to the page code.
 (() => {
