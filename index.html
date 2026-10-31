@@ -580,5 +580,19 @@ dash.calc('rankings', {
 })();
 </script>
 
+<script>
+// When embedded in another site (iframe), tell the host page our height so the window fits the content.
+(() => {
+  if (window.parent === window) return;
+  let last = 0;
+  const send = () => {
+    const h = Math.ceil(document.documentElement.scrollHeight);
+    if (Math.abs(h - last) > 2) { last = h; window.parent.postMessage({ nrHeight: h }, '*'); }
+  };
+  new ResizeObserver(send).observe(document.body);
+  window.addEventListener('load', send);
+  setTimeout(send, 1500);
+})();
+</script>
 </body>
 </html>
