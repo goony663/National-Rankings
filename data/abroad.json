@@ -1,102 +1,104 @@
 [
-{
-"disc": "B",
-"gender": "M",
-"cat": "U19",
-"athlete": "איתמר הראל",
-"club": "מטפסי תל אביב",
-"event": "EYCH",
-"result": "podium",
-"note": "אליפות אירופה לנוער, סוקורו 2026 · זהב"
-},
-{
-"disc": "B",
-"gender": "W",
-"cat": "U21",
-"athlete": "עלמה ספיר הלוי",
-"club": "מטפסי תל אביב",
-"event": "EYCH",
-"result": "podium",
-"note": "אליפות אירופה לנוער, סוקורו 2026 · כסף (U19)"
-},
-{
-"disc": "B",
-"gender": "M",
-"cat": "U21",
-"athlete": "גפן לוי",
-"club": "מטפסי תל אביב",
-"event": "EYCH",
-"result": "final",
-"note": "אליפות אירופה לנוער, סוקורו 2026 · גמר, מקום 5 (U19)"
-},
-{
-"disc": "B",
-"gender": "W",
-"cat": "U21",
-"athlete": "עלמה ספיר הלוי",
-"club": "מטפסי תל אביב",
-"event": "WYCH",
-"result": "final",
-"note": "אליפות העולם לנוער, ארקו 2026 · גמר, מקום 4 (U19)"
-},
-{
-"disc": "B",
-"gender": "M",
-"cat": "ADULT",
-"athlete": "עדי ברק",
-"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
-"world_rank": 10,
-"provisional": true,
-"note": "דירוג עולמי (CUWR) – מקום 10, נכון ל-1.11.26; זמני עד 1.1.27"
-},
-{
-"disc": "B",
-"gender": "M",
-"cat": "ADULT",
-"athlete": "יונתן כץ",
-"club": "מטפסי תל אביב",
-"world_rank": 20,
-"provisional": true,
-"note": "דירוג עולמי (CUWR) – מקום 20, נכון ל-1.11.26; זמני עד 1.1.27"
-},
-{
-"disc": "B",
-"gender": "M",
-"cat": "ADULT",
-"athlete": "אור מרק",
-"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
-"world_rank": 23,
-"provisional": true,
-"note": "דירוג עולמי (CUWR) – מקום 23, נכון ל-1.11.26; זמני עד 1.1.27"
-},
-{
-"disc": "B",
-"gender": "M",
-"cat": "ADULT",
-"athlete": "תומר יעקובוביץ",
-"club": "מטפסי תל אביב",
-"world_rank": 35,
-"provisional": true,
-"note": "דירוג עולמי (CUWR) – מקום 35, נכון ל-1.11.26; זמני עד 1.1.27"
-},
-{
-"disc": "B",
-"gender": "W",
-"cat": "ADULT",
-"athlete": "איילה כרם",
-"club": "מכבי טס\"ה",
-"world_rank": 9,
-"provisional": true,
-"note": "דירוג עולמי (CUWR) – מקום 9, נכון ל-1.11.26; זמני עד 1.1.27"
-},
-{
-"disc": "B",
-"gender": "W",
-"cat": "ADULT",
-"athlete": "תמר כהן",
-"club": "מכבי טס\"ה",
-"world_rank": 23,
-"provisional": true,
-"note": "דירוג עולמי (CUWR) – מקום 23, נכון ל-1.11.26; זמני עד 1.1.27"
-}
+ {
+  "disc": "B",
+  "gender": "M",
+  "cat": "U19",
+  "athlete": "איתמר הראל",
+  "club": "מטפסי תל אביב",
+  "event": "EYCH",
+  "result": "podium",
+  "note": "אליפות אירופה לנוער, סוקורו 2026 · זהב"
+ },
+ {
+  "disc": "B",
+  "gender": "W",
+  "cat": "U21",
+  "athlete": "עלמה ספיר הלוי",
+  "club": "מטפסי תל אביב",
+  "event": "EYCH",
+  "result": "podium",
+  "note": "אליפות אירופה לנוער, סוקורו 2026 · כסף (U19)"
+ },
+ {
+  "disc": "B",
+  "gender": "M",
+  "cat": "U21",
+  "athlete": "גפן לוי",
+  "club": "מטפסי תל אביב",
+  "event": "EYCH",
+  "result": "final",
+  "note": "אליפות אירופה לנוער, סוקורו 2026 · גמר, מקום 5 (U19)"
+ },
+ {
+  "disc": "B",
+  "gender": "W",
+  "cat": "U21",
+  "athlete": "עלמה ספיר הלוי",
+  "club": "מטפסי תל אביב",
+  "event": "WYCH",
+  "result": "final",
+  "note": "אליפות העולם לנוער, ארקו 2026 · גמר, מקום 4 (U19)"
+ },
+ {
+  "disc": "B",
+  "gender": "M",
+  "cat": "ADULT",
+  "athlete": "עדי ברק",
+  "club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+  "world_rank": 10,
+  "provisional": true,
+  "note": "דירוג עולמי (CUWR) – מקום 10, נכון ל-1.11.26; זמני עד 1.1.27"
+ },
+ {
+  "disc": "B",
+  "gender": "M",
+  "cat": "ADULT",
+  "athlete": "יונתן כץ",
+  "club": "מטפסי תל אביב",
+  "world_rank": 20,
+  "provisional": true,
+  "note": "דירוג עולמי (CUWR) – מקום 20, נכון ל-1.11.26; זמני עד 1.1.27"
+ },
+ {
+  "disc": "B",
+  "gender": "M",
+  "cat": "ADULT",
+  "athlete": "אור מרק",
+  "club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+  "world_rank": 23,
+  "provisional": true,
+  "note": "דירוג עולמי (CUWR) – מקום 23, נכון ל-1.11.26; זמני עד 1.1.27",
+  "age": "U19"
+ },
+ {
+  "disc": "B",
+  "gender": "M",
+  "cat": "ADULT",
+  "athlete": "תומר יעקובוביץ",
+  "club": "מטפסי תל אביב",
+  "world_rank": 35,
+  "provisional": true,
+  "note": "דירוג עולמי (CUWR) – מקום 35, נכון ל-1.11.26; זמני עד 1.1.27"
+ },
+ {
+  "disc": "B",
+  "gender": "W",
+  "cat": "ADULT",
+  "athlete": "איילה כרם",
+  "club": "מכבי טס\"ה",
+  "world_rank": 9,
+  "provisional": true,
+  "note": "דירוג עולמי (CUWR) – מקום 9, נכון ל-1.11.26; זמני עד 1.1.27"
+ },
+ {
+  "disc": "B",
+  "gender": "W",
+  "cat": "ADULT",
+  "athlete": "תמר כהן",
+  "club": "מכבי טס\"ה",
+  "world_rank": 23,
+  "provisional": true,
+  "note": "דירוג עולמי (CUWR) – מקום 23, נכון ל-1.11.26; זמני עד 1.1.27",
+  "age": "U21"
+ }
 ]

@@ -216,9 +216,6 @@ html.nr-embedded body { padding-top: 4px; }
 .nr-table tr.zero td.nm, .nr-table tr.zero td.total { font-weight: 500; }
 /* National team: a bold line under the last athlete currently inside the squad */
 .nr-table tr.team-last td { border-bottom: 3px solid var(--nr-navy); }
-.nr-table tr.team-last td.rk { position: relative; }
-.nr-table tr.team-last td { padding-bottom: 1.45rem; }
-.nr-table tr.team-last td.rk::after { content: attr(data-team); position: absolute; inset-inline-start: .35rem; bottom: .2rem; z-index: 2; font-size: .64rem; font-weight: 700; line-height: 1.15rem; padding: 0 .45rem; border-radius: 3px; background: var(--nr-navy); color: #fff; white-space: nowrap; }
 .nr-empty { padding: 2rem 1rem; color: var(--nr-muted); text-align: center; white-space: normal !important; }
 @media (max-width: 40rem) { .nr-table .club { display: none; } .nr-table { font-size: .88rem; } }
 
@@ -401,7 +398,7 @@ const rankingsFn = (results, competitions, scoring, abroad) => {
   const tables = new Map();
   const entry = (disc, gender, cat, r) => {
     const key = [disc, gender, cat, r.athlete].join('|');
-    if (!tables.has(key)) tables.set(key, { key, disc, gender, cat, age: r.cat || cat, athlete: r.athlete, club: r.club, L1: null, L2: null, L3: null, NC: null, ABR: null, L1_place: null, L2_place: null, L3_place: null, NC_place: null, ABR_note: '', ABR_provisional: false });
+    if (!tables.has(key)) tables.set(key, { key, disc, gender, cat, age: r.age || r.cat || cat, athlete: r.athlete, club: r.club, L1: null, L2: null, L3: null, NC: null, ABR: null, L1_place: null, L2_place: null, L3_place: null, NC_place: null, ABR_note: '', ABR_provisional: false });
     const e = tables.get(key);
     e.club = r.club;
     return e;
@@ -428,6 +425,9 @@ const rankingsFn = (results, competitions, scoring, abroad) => {
   }
   // Abroad: world ranking for adults (Table 2), youth Worlds/Europeans for youth (Table 6)
   for (const a of abroad) {
+    // A youth athlete with world-ranking points is tagged with their age group in the adults table and also listed
+    // in their own age group's table (world-ranking points don't count there)
+    if (a.cat === 'ADULT' && a.age && a.age !== 'ADULT') entry(a.disc, a.gender, a.age, { ...a, cat: a.age });
     const e = entry(a.disc, a.gender, a.cat, a);
     const p = a.cat === 'ADULT'
       ? (scoring.find((s) => s.table === 'world' && a.world_rank >= s.place && a.world_rank <= s.place_to) || { points: 0 }).points
@@ -667,7 +667,7 @@ dash.calc('rankings', {
       const tr = el('tr', r.ranked ? '' : 'zero');
       tr.dataset.key = r.key;
       const rk = el('td', 'n rk');
-      if (!q && r.key === teamLastKey) { tr.classList.add('team-last'); rk.dataset.team = `סגל הנבחרת (${teamSize})`; }
+      if (!q && r.key === teamLastKey) tr.classList.add('team-last');
       const badge = el('span', 'nr-rank');
       badge.append(el('span', '', String(r.rank)));
       if (r.ranked && r.rank <= 3) badge.dataset.top = r.rank;
