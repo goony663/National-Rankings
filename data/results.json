@@ -2365,5 +2365,401 @@
 "athlete": "ליהיא יונה",
 "club": "מכבי מאנקיז נתניה",
 "place": 14
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אורי פוגל",
+"club": "הפועל מטפסי ת\"א",
+"place": 15
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אלון הנדלמן",
+"club": "הפועל מטפסי ת\"א",
+"place": 6
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "דויד לוי",
+"club": "הפועל מטפסי ת\"א",
+"place": 25
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אלון רינות",
+"club": "הפועל מטפסי ת\"א",
+"place": 42
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "ארבל ננדור חיטין גרונר",
+"club": "אימונים טיפוס עצמה",
+"place": 15
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "איתן צחר",
+"club": "הפועל מטפסי ת\"א",
+"place": 40
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "זוהר ישראל עובד",
+"club": "הפועל מטפסי ת\"א",
+"place": 8
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "איתמר שמואלי",
+"club": "מכבי מאנקיז נתניה",
+"place": 34
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אור דנה",
+"club": "הפועל מטפסי ת\"א",
+"place": 24
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "נדב בן ארי",
+"club": "מכבי טוטם",
+"place": 15
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "יאיר רחמים",
+"club": "מכבי טס\"ה",
+"place": 39
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "איתן אדלשטיין",
+"club": "מכבי טס\"ה",
+"place": 7
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "רותם בן צבי",
+"club": "מכבי מאנקיז נתניה",
+"place": 35
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "בנימין פאריק",
+"club": "מכבי טוטם",
+"place": 12
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "טל קרמר",
+"club": "מכבי טס\"ה",
+"place": 4
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "סער יאבו",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אלון אביב",
+"club": "מכבי לוין חדרה",
+"place": 31
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "יואב ברוכיאל",
+"club": "הפועל מטפסי ת\"א",
+"place": 5
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "ניאו דוידי",
+"club": "הפועל מטפסי ת\"א",
+"place": 20
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "עמית שקד",
+"club": "אימונים טיפוס עצמה",
+"place": 12
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "עילי מאיר משה הלוי",
+"club": "מכבי טס\"ה",
+"place": 29
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "איתן פולוקשט",
+"club": "מכבי מאנקיז נתניה",
+"place": 10
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "שי ליקבר",
+"club": "מכבי טס\"ה",
+"place": 18
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "רפאל לוי",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 9
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "יונתן לוין",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 12
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "נרי שמיר",
+"club": "הפועל מטפסי ת\"א",
+"place": 1
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "רפאל הורסיו ארז פיליפונה",
+"club": "הפועל רוקה רוג'ום",
+"place": 41
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "נועם אברהם פריימן",
+"club": "הפועל מטפסי ת\"א",
+"place": 43
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "יהלי קפלן",
+"club": "מכבי טוטם",
+"place": 44
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "סתיו שיין",
+"club": "מכבי טס\"ה",
+"place": 23
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אדם סיון",
+"club": "מכבי טס\"ה",
+"place": 22
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "עקיבא לב מאיר לנדאו",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 1
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "תומר אוסמן",
+"club": "הפועל רוקה רוג'ום",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "עומר הבר",
+"club": "מכבי טס\"ה",
+"place": 18
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "עופר נפתלי",
+"club": "מכבי טס\"ה",
+"place": 38
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "עמית שוקרון",
+"club": "מכבי טס\"ה",
+"place": 37
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "שגיא מנחם",
+"club": "מכבי טס\"ה",
+"place": 32
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אורי לוטן",
+"club": "מכבי מאנקיז נתניה",
+"place": 26
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "נווה גרונר",
+"club": "מכבי טס\"ה",
+"place": 11
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "נדב לפידות",
+"club": "מכבי ונגה פתח תקווה",
+"place": 30
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אורי אלמוג",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 20
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "ענבר לאלו",
+"club": "הפועל מטפסי ת\"א",
+"place": 3
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "אבישי כנען",
+"club": "הפועל מטפסי ת\"א",
+"place": 33
+},
+{
+"comp": "B-L2",
+"gender": "M",
+"cat": "U17",
+"pool": "U17",
+"athlete": "גל פסוול",
+"club": "מכבי מאנקיז נתניה",
+"place": 36
 }
 ]
