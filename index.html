@@ -143,6 +143,9 @@ html.nr-embedded body { padding-top: 4px; }
 .nr-stop-tag { font-size: .72rem; font-weight: 700; letter-spacing: .04em; color: var(--nr-muted); }
 .nr-stop[data-state="done"] .nr-stop-tag { color: var(--nr-ink); }
 .nr-stop[data-state="next"] .nr-stop-tag { color: var(--nr-sky-ink); }
+/* Competition under way: some results are in, not yet closed */
+.nr-stop[data-state="partial"] .nr-dot { background: linear-gradient(90deg, var(--color-bg) 50%, var(--nr-sky) 50%); border-color: var(--nr-sky); }
+.nr-stop[data-state="partial"] .nr-stop-tag { color: var(--nr-sky-ink); }
 .nr-stop-name { font-weight: 700; font-size: .95rem; line-height: 1.25; }
 .nr-stop-meta { font-size: .8rem; color: var(--nr-muted); font-variant-numeric: tabular-nums; }
 @media (max-width: 40rem) {
@@ -561,7 +564,10 @@ dash.calc('rankings', {
     const C = dash.data('competitions');
     const R = dash.data('results');
     const comps = C.status === 'ok' ? [...C.data].sort((a, b) => a.start.localeCompare(b.start)) : [];
-    const doneIds = new Set(R.status === 'ok' ? R.data.map((r) => r.comp) : []);
+    // A competition is finished only when it is marked closed; results already in for an open one are partial
+    const withResults = new Set(R.status === 'ok' ? R.data.map((r) => r.comp) : []);
+    const doneIds = new Set(comps.filter((c) => c.closed).map((c) => c.id));
+    const partialIds = new Set(comps.filter((c) => !c.closed && withResults.has(c.id)).map((c) => c.id));
     const today = new Date().toISOString().slice(0, 10);
 
     const lede = document.getElementById('lede');
@@ -572,7 +578,8 @@ dash.calc('rankings', {
       const parts = [];
       if (last) parts.push('מעודכן לאחר ', markComp(el('b', '', last.name), 'name', last.id), ` (${longRange(last)}).`);
       else parts.push('טרם נכנסו תוצאות לעונה.');
-      if (next) parts.push(' התחרות הבאה: ', markComp(el('b', '', next.name), 'name', next.id), `, ${longRange(next)}.`);
+      if (next && partialIds.has(next.id)) parts.push(' בתהליך: ', markComp(el('b', '', next.name), 'name', next.id), `, ${longRange(next)} – תוצאות חלקיות.`);
+      else if (next) parts.push(' התחרות הבאה: ', markComp(el('b', '', next.name), 'name', next.id), `, ${longRange(next)}.`);
       lede.replaceChildren(...parts);
     }
 
@@ -580,14 +587,14 @@ dash.calc('rankings', {
     const cols = columnsFor(comps, p);
     const season = document.getElementById('season');
     season.style.setProperty('--n', Math.max(cols.length, 1));
-    const firstOpen = cols.find((c) => !doneIds.has(c.id));
+    const firstOpen = cols.find((c) => !doneIds.has(c.id) && !partialIds.has(c.id));
     season.replaceChildren(...cols.map((c) => {
-      const state = doneIds.has(c.id) ? 'done' : c === firstOpen ? 'next' : 'later';
+      const state = doneIds.has(c.id) ? 'done' : partialIds.has(c.id) ? 'partial' : c === firstOpen ? 'next' : 'later';
       const li = el('li', 'nr-stop');
       li.dataset.state = state;
       li.append(
         el('span', 'nr-dot'),
-        el('span', 'nr-stop-tag', state === 'done' ? 'הסתיימה ✓' : state === 'next' ? 'הבאה בתור' : 'בהמשך'),
+        el('span', 'nr-stop-tag', state === 'done' ? 'הסתיימה ✓' : state === 'partial' ? 'בתהליך · תוצאות חלקיות' : state === 'next' ? 'הבאה בתור' : 'בהמשך'),
         markComp(el('span', 'nr-stop-name', c.name), 'name', c.id),
         el('span', 'nr-stop-meta', [c.venue, longRange(c)].filter(Boolean).join(' · ')),
       );
