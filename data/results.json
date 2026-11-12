@@ -3490,5 +3490,302 @@
 "athlete": "ראם שועלי",
 "club": "מכבי ונגה פתח תקווה",
 "place": 59
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "מאיה הוכרמן דרימר",
+"club": "אסא טכניון",
+"place": 2
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U21",
+"pool": "open",
+"athlete": "עלמה ספיר הלוי",
+"club": "הפועל מטפסי ת\"א",
+"place": 1
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "עלמה שלמוביץ",
+"club": "מכבי טס\"ה",
+"place": 3
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "רובי רותם דנציגר",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 16
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "נועה ששון",
+"club": "מכבי מאנקיז נתניה",
+"place": 14
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "אביגיל בן צבי",
+"club": "מכבי טס\"ה",
+"place": 9
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U21",
+"pool": "open",
+"athlete": "עדה קרלסברון",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 11
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "ירדן צ'רני",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 4
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "ליבי רחל הדר",
+"club": "מכבי טס\"ה",
+"place": 10
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "רעות רם",
+"club": "הפועל מטפסי ת\"א",
+"place": 15
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "יובל רם",
+"club": "הפועל מטפסי ת\"א",
+"place": 13
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "יסמין מרום",
+"club": "מכבי מאנקיז נתניה",
+"place": 20
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U21",
+"pool": "open",
+"athlete": "נעמה ברק",
+"club": "אימונים טיפוס עצמה",
+"place": 18
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "ADULT",
+"pool": "open",
+"athlete": "סטלה קוזלינר מורוז",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "אלומה ברנד",
+"club": "מכבי טס\"ה",
+"place": 6
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "עדי יוסף",
+"club": "הפועל מטפסי ת\"א",
+"place": 21
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "רותם צוברי",
+"club": "הפועל מטפסי ת\"א",
+"place": 19
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "נויה ברוקס",
+"club": "מכבי ונגה פתח תקווה",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "שילי זהב",
+"club": "מכבי ונגה פתח תקווה",
+"place": 12
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "שרון צטנר",
+"club": "הפועל מטפסי ת\"א",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "תמר גור",
+"club": "הפועל מטפסי ת\"א",
+"place": 23
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "אלונה גודמן",
+"club": "הפועל מטפסי ת\"א",
+"place": 22
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "נטע וול",
+"club": "מכבי מאנקיז נתניה",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "ליהיא יונה",
+"club": "מכבי מאנקיז נתניה",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "רחל אמה להן",
+"club": "הפועל מטפסי ת\"א",
+"place": 26
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "יובל עובדיה",
+"club": "הפועל מטפסי ת\"א",
+"place": 7
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "תמרה שנקר רבינוביץ",
+"club": "מגדל שגיא",
+"place": 23
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "שחר אשכנזי",
+"club": "מכבי מאנקיז נתניה",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "יעל גונדה",
+"club": "אימונים טיפוס עצמה",
+"place": 27
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "ליה עמירן",
+"club": "טופ נתניה- מועדון טיפוס ספורטיבי",
+"place": 17
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "זוהר רמות טל",
+"club": "מכבי רחובות - מועדון לנינג'ה וטיפוס",
+"place": 23
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "עופר קדים",
+"club": "הפועל מטפסי ת\"א",
+"place": 5
+},
+{
+"comp": "B-L2",
+"gender": "W",
+"cat": "U19",
+"pool": "open",
+"athlete": "לוטם שרון",
+"club": "מכבי טס\"ה",
+"place": 8
 }
 ]
